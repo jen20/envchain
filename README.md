@@ -1,4 +1,4 @@
-# envchain - set environment variables with OS X keychain or D-Bus secret service
+# envchain - set environment variables with macOS keychain or D-Bus secret service
 
 ## What?
 
@@ -11,14 +11,14 @@ Putting these secrets on disk in this way is a grave risk.
 
 `envchain` allows you to secure credential environment variables to your secure vault, and set to environment variables only when you called explicitly.
 
-Currently, `envchain` supports OS X keychain and D-Bus secret service (gnome-keyring) as a vault.
+Currently, `envchain` supports macOS keychain and D-Bus secret service (gnome-keyring) as a vault.
 
 Don't give any credentials implicitly!
 
-## Requirement (OS X)
+## Requirement (macOS)
 
-- OS X
-  - Confirmed to work on OS X 10.9 (Mavericks), 10.10 (Yosemite), and 10.11 (El Capitan)
+- macOS
+  - Confirmed to work on OS X 10.11 (El Capitan), macOS 10.12 (Sierra).
   - OS X 10.7 (Lion) or later is required, but not confirmed
 
 ## Requirement (Linux)
@@ -48,7 +48,16 @@ brew install envchain
 
 ## Usage
 
-### Define variables
+### Saving variables
+
+Environment variables are set within a specified _namespace._ You can set variables in a single command:
+
+```
+envchain --set NAMESPACE ENV [ENV ..]
+```
+
+You will be prompted to enter the values for each variable.
+For example, we can set two variables... `AWS_ACCESS_KEY_ID` and `AWS_SECRET_ACCESS_KEY` here, within a namespace called `aws`:
 
 ```
 $ envchain --set aws AWS_ACCESS_KEY_ID AWS_SECRET_ACCESS_KEY
@@ -56,15 +65,14 @@ aws.AWS_ACCESS_KEY_ID: my-access-key
 aws.AWS_SECRET_ACCESS_KEY: secret
 ```
 
-You can separate environment variables via namespaces:
+Here we define a single new variable within a different namespace:
 
 ```
 $ envchain --set hubot HUBOT_HIPCHAT_PASSWORD
 hubot.HUBOT_HIPCHAT_PASSWORD: xxxx
 ```
 
-These will appear as application passwords with `envchain-NAMESPACE`
-in Keychain.
+These will all appear as application passwords with `envchain-NAMESPACE` in the data store (Keychain in macOS, gnome-keyring in common Linux distros).
 
 ### Execute commands with defined variables
 
